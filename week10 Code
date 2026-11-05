@@ -1,0 +1,91 @@
+abstract class PlayerAction {
+  void specialMove();
+}
+
+class Gamer {
+  String name;
+  int level;
+  int _points;
+
+  Gamer(this.name, this.level, this._points);
+
+  int getPoints() {
+    return _points;
+  }
+
+  void addPoints(int points) {
+    _points += points;
+  }
+
+  void displayInfo() {
+    print("Player Name: $name");
+    print("Level: $level");
+    print("Points: $_points");
+  }
+}
+
+class CasualGamer extends Gamer implements PlayerAction {
+  CasualGamer(String name, int level, int points)
+      : super(name, level, points);
+
+  @override
+  void displayInfo() {
+    print("\n--- CASUAL GAMER ---");
+    super.displayInfo();
+  }
+
+  @override
+  void specialMove() {
+    print("$name uses a Bonus Point!");
+  }
+}
+
+class ProGamer extends Gamer implements PlayerAction {
+  ProGamer(String name, int level, int points)
+      : super(name, level, points);
+
+  @override
+  void displayInfo() {
+    print("\n--- PRO GAMER ---");
+    super.displayInfo();
+  }
+
+  @override
+  void specialMove() {
+    print("$name uses a Pro Power Move!");
+  }
+}
+
+mixin SaveFeature {
+  void saveProgress() {
+    print("Game progress saved successfully!");
+  }
+}
+
+class GameRecorder with SaveFeature {
+  void recordGame() {
+    print("\n--- GAME RECORDER ---");
+    saveProgress();
+  }
+}
+
+void main() {
+  Gamer player1 = CasualGamer("Andrey", 5, 100);
+  Gamer player2 = ProGamer("Player2", 3, 50);
+
+  player1.addPoints(20);
+  player2.addPoints(30);
+
+  List<Gamer> players = [player1, player2];
+
+  for (Gamer player in players) {
+    player.displayInfo();
+
+    if (player is PlayerAction) {
+      (player as PlayerAction).specialMove();
+    }
+  }
+
+  GameRecorder recorder = GameRecorder();
+  recorder.recordGame();
+}
